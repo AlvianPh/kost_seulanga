@@ -1,0 +1,35 @@
+# Build output & generated files — tidak perlu dibaca/diindex oleh agent
+build/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+
+# Platform-specific build artifacts
+android/.gradle/
+android/app/build/
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+macos/Pods/
+windows/flutter/ephemeral/
+linux/flutter/ephemeral/
+
+# Generated code (Isar, dll) — source of truth tetap di model asli & data-model.md
+*.g.dart
+*.freezed.dart
+*.gr.dart
+
+# IDE & OS noise
+.idea/
+.vscode/
+*.iml
+.DS_Store
+
+# Logs & coverage
+*.log
+coverage/
+
+# Package lock yang besar dan jarang perlu dibaca penuh oleh agent
+pubspec.lock
