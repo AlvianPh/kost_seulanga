@@ -23,8 +23,9 @@ final appRouter = GoRouter(
       redirect: (context, state) => '/dashboard',
     ),
     GoRoute(
-      path: '/payments/add/:tenantId',
-      builder: (context, state) => PaymentFormScreen(tenantId: int.parse(state.pathParameters['tenantId']!)),
+      parentNavigatorKey: rootNavigatorKey,
+      path: '/payments/add',
+      builder: (context, state) => PaymentFormScreen(tenantId: state.extra as int?),
     ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {

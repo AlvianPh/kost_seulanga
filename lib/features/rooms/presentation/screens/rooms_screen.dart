@@ -5,6 +5,7 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/formatters.dart';
 import '../../../../data/models/enums.dart';
 import '../../providers/room_provider.dart';
+import '../../../payments/providers/payment_provider.dart';
 import '../../tenants/providers/tenant_provider.dart';
 import 'room_form_sheet.dart';
 

@@ -154,7 +154,7 @@ class _TenantDetailScreenState extends ConsumerState<TenantDetailScreen> {
             ),
             const SizedBox(height: 8),
             ElevatedButton.icon(
-              onPressed: () => context.go('/payments/add/${_tenant!.id}'),
+              onPressed: () => context.go('/payments/add', extra: _tenant!.id),
               icon: const Icon(Icons.attach_money),
               label: const Text('Catat Pembayaran'),
             ),
