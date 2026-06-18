@@ -84,10 +84,24 @@ class RoomRepository {
     });
   }
 
-  // TODO: Implement actual occupancy check when Tenant module is ready
+  // Derive the current status of a room based on active tenant occupancy.
+  // Returns RoomStatus.occupied if there is a tenant linked to this room whose
+  // checkOutDate is null (i.e., still occupying). Otherwise returns
+  // RoomStatus.available. This does not affect rooms marked as inactive;
+  // callers should handle that case separately.
   Future<RoomStatus> deriveRoomStatus(int id) async {
-    // Dummy implementation: returns available.
-    // In the future: check if there's an active tenant.
-    return RoomStatus.available;
+    // Ensure the room exists; otherwise throw.
+    final room = await getRoomById(id);
+    if (room == null) {
+      throw Exception('Room not found');
+    }
+
+    // Check for an active tenant linked to this room.
+    final activeTenant = await db.tenantCollections
+        .filter()
+        .currentRoom((q) => q.idEqualTo(id))
+        .checkOutDateIsNull()
+        .findFirst();
+    return activeTenant != null ? RoomStatus.occupied : RoomStatus.available;
   }
 }
