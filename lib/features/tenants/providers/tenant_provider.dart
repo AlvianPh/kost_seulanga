@@ -83,11 +83,11 @@ class TenantAsyncNotifier extends AsyncNotifier<void> {
 
   Future<void> checkoutTenant({
     required TenantCollection tenant,
-    required DateTime checkoutDate,
+    required DateTime checkOutDate,
   }) async {
     state = const AsyncLoading();
     try {
-      await _repo.checkoutTenant(tenant: tenant, checkOutDate: checkoutDate);
+      await _repo.checkoutTenant(tenant: tenant, checkOutDate: checkOutDate);
       state = const AsyncData(null);
     } catch (e, st) {
       state = AsyncError(e, st);

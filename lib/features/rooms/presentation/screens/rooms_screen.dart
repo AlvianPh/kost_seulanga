@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/formatters.dart';
 import '../../../../data/models/enums.dart';
 import '../../providers/room_provider.dart';
+import '../../tenants/providers/tenant_provider.dart';
+import '../../tenants/providers/tenant_provider.dart';
 import 'room_form_sheet.dart';
 
 class RoomsScreen extends ConsumerStatefulWidget {
@@ -217,56 +220,102 @@ class _RoomsScreenState extends ConsumerState<RoomsScreen> {
   }
 
   Widget _buildPenghuniView(BuildContext context) {
-    final theme = Theme.of(context);
-    return Center(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primaryContainer.withValues(alpha: 0.2),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.people_outline,
-                size: 64,
-                color: theme.colorScheme.primary,
-              ),
-            ),
-            const SizedBox(height: 24),
-            Text(
-              'Modul Penghuni Belum Tersedia',
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Fitur untuk mengelola data penyewa kost akan segera hadir.',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton.icon(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Fitur pengelolaan penghuni akan segera hadir!'),
-                    duration: Duration(seconds: 2),
+    final tenantsAsync = ref.watch(tenantsStreamProvider);
+    final colors = context.statusColors;
+    return tenantsAsync.when(
+      data: (tenants) {
+        if (tenants.isEmpty) {
+          return Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.2),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.people_outline,
+                      size: 64,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                   ),
-                );
-              },
-              icon: const Icon(Icons.add),
-              label: const Text('Tambah Penghuni'),
-            )
-          ],
-        ),
-      ),
+                  const SizedBox(height: 24),
+                  Text(
+                    'Belum ada penghuni',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Tambahkan penghuni baru untuk mulai mengelola kost Anda.',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton.icon(
+                    onPressed: () => context.go('/rooms/tenants/add'),
+                    icon: const Icon(Icons.add),
+                    label: const Text('Tambah Penghuni'),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+        return ListView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          itemCount: tenants.length,
+          itemBuilder: (context, index) {
+            final tenant = tenants[index];
+            final roomNumber = tenant.currentRoom.value?.roomNumber ?? '-';
+            return Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(color: Theme.of(context).colorScheme.outlineVariant.withValues(alpha: 0.5)),
+              ),
+              margin: const EdgeInsets.only(bottom: 12),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(12),
+                onTap: () => context.go('/rooms/tenants/${tenant.id}'),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              tenant.fullName,
+                              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 4),
+                            Text('Kamar $roomNumber'),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: colors.active.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text('Aktif', style: TextStyle(color: colors.active, fontWeight: FontWeight.bold)),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (e, _) => Center(child: Text('Gagal memuat data penghuni: $e')),
     );
   }
 
@@ -354,7 +403,13 @@ class _RoomsScreenState extends ConsumerState<RoomsScreen> {
               tooltip: 'Tambah Kamar',
               child: const Icon(Icons.add),
             )
-          : null,
+          : _selectedSegment == 1
+              ? FloatingActionButton(
+                  onPressed: () => context.go('/rooms/tenants/add'),
+                  tooltip: 'Tambah Penghuni',
+                  child: const Icon(Icons.add),
+                )
+              : null,
     );
   }
 }

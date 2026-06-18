@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../core/theme/app_theme.dart';
+// Removed unused app_theme import
 import '../../../../core/utils/formatters.dart';
 import '../../../../data/models/enums.dart';
 import '../../../../data/models/room_collection.dart';
