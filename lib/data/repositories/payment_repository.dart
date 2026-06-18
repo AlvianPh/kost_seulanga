@@ -21,11 +21,12 @@ class PaymentRepository {
     required PaymentMethod method,
     String? notes,
   }) async {
-    // Calculate paidUntil snapshot
+    // Calculate paidUntil snapshot based on tenant's cachedPaidUntil or checkInDate
+    final basis = tenant.cachedPaidUntil ?? tenant.checkInDate;
     final paidUntil = DateTime(
-      paymentDate.year,
-      paymentDate.month + monthsPaid,
-      paymentDate.day,
+      basis.year,
+      basis.month + monthsPaid,
+      basis.day,
     );
 
     final payment = PaymentCollection()
@@ -111,12 +112,12 @@ class PaymentRepository {
   }
 
   // ---------- Derived State ----------
-  PaymentStatus derivePaymentStatus(PaymentCollection payment) {
+  PaymentStatus derivePaymentStatus(DateTime? cachedPaidUntil) {
     final now = DateTime.now();
-    if (payment.paidUntil.isBefore(now)) {
+    if (cachedPaidUntil == null || cachedPaidUntil.isBefore(now)) {
       return PaymentStatus.overdue;
     }
-    final diff = payment.paidUntil.difference(now).inDays;
+    final diff = cachedPaidUntil.difference(now).inDays;
     if (diff <= 7) {
       return PaymentStatus.upcomingDue;
     }
