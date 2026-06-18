@@ -5,7 +5,9 @@ import '../../features/dashboard/presentation/screens/dashboard_screen.dart';
 import '../../features/rooms/presentation/screens/rooms_screen.dart';
 import '../../features/payments/presentation/screens/keuangan_screen.dart';
 import '../../features/reports/presentation/screens/laporan_screen.dart';
-
+import '../../features/tenants/presentation/screens/tenant_form_screen.dart';
+import '../../features/tenants/presentation/screens/tenant_detail_screen.dart';
+import '../../features/tenants/presentation/screens/move_tenant_screen.dart';
 final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
 final appRouter = GoRouter(
@@ -34,6 +36,23 @@ final appRouter = GoRouter(
             GoRoute(
               path: '/rooms',
               builder: (context, state) => const RoomsScreen(),
+            ),
+            // Tenant routes
+            GoRoute(
+              path: '/rooms/tenants/add',
+              builder: (context, state) => const TenantFormScreen(),
+            ),
+            GoRoute(
+              path: '/rooms/tenants/:id',
+              builder: (context, state) => TenantDetailScreen(tenantId: int.parse(state.pathParameters['id']!)),
+            ),
+            GoRoute(
+              path: '/rooms/tenants/:id/edit',
+              builder: (context, state) => TenantFormScreen(tenantId: int.parse(state.pathParameters['id']!)),
+            ),
+            GoRoute(
+              path: '/rooms/tenants/:id/move',
+              builder: (context, state) => MoveTenantScreen(tenantId: int.parse(state.pathParameters['id']!)),
             ),
           ],
         ),
