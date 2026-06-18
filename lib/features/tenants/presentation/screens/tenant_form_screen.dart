@@ -6,7 +6,7 @@ import '../../../../core/utils/formatters.dart';
 import '../../../../data/models/enums.dart';
 import '../../../../data/models/room_collection.dart';
 import '../../../../data/models/tenant_collection.dart';
-import '../../../../data/repositories/tenant_repository.dart';
+
 import '../../providers/tenant_provider.dart';
 import '../../providers/room_provider.dart';
 

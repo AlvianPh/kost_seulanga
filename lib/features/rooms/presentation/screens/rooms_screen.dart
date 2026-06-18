@@ -6,7 +6,6 @@ import '../../../../core/utils/formatters.dart';
 import '../../../../data/models/enums.dart';
 import '../../providers/room_provider.dart';
 import '../../tenants/providers/tenant_provider.dart';
-import '../../tenants/providers/tenant_provider.dart';
 import 'room_form_sheet.dart';
 
 class RoomsScreen extends ConsumerStatefulWidget {
@@ -357,6 +356,24 @@ class _RoomsScreenState extends ConsumerState<RoomsScreen> {
                         ],
                       )
                     ],
+                  ),
+                ),
+              )
+            : _selectedSegment == 1
+            ? PreferredSize(
+                preferredSize: const Size.fromHeight(60),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Cari penghuni...',
+                      prefixIcon: const Icon(Icons.search),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                    onChanged: (value) => ref.read(tenantSearchQueryProvider.notifier).state = value,
                   ),
                 ),
               )

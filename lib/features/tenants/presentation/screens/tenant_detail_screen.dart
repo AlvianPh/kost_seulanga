@@ -4,10 +4,8 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/utils/exceptions.dart';
 import '../../../../core/utils/formatters.dart';
 import '../../../../data/models/tenant_collection.dart';
-import '../../../../data/models/room_collection.dart';
 import '../../../../data/models/tenant_room_history_collection.dart';
 import '../../providers/tenant_provider.dart';
-import '../../../../features/rooms/providers/room_provider.dart';
 
 class TenantDetailScreen extends ConsumerStatefulWidget {
   final int tenantId;
