@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/utils/formatters.dart';
 import '../../../../data/models/room_collection.dart';
 import '../../../../data/models/tenant_collection.dart';
-import '../../../../data/repositories/tenant_repository.dart';
+
 import '../../providers/tenant_provider.dart';
 import '../../../../features/rooms/providers/room_provider.dart';
 

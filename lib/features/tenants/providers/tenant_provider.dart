@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../data/isar_service.dart';
-import '../../../data/models/enums.dart';
+
 import '../../../data/models/tenant_collection.dart';
 import '../../../data/repositories/tenant_repository.dart';
 
