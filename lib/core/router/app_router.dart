@@ -22,11 +22,6 @@ final appRouter = GoRouter(
       path: '/',
       redirect: (context, state) => '/dashboard',
     ),
-    // Payment routes
-    GoRoute(
-      path: '/payments/add',
-      builder: (context, state) => const PaymentFormScreen(),
-    ),
     GoRoute(
       path: '/payments/add/:tenantId',
       builder: (context, state) => PaymentFormScreen(tenantId: int.parse(state.pathParameters['tenantId']!)),
