@@ -154,16 +154,15 @@ class _TenantDetailScreenState extends ConsumerState<TenantDetailScreen> {
             ),
             const SizedBox(height: 8),
             ElevatedButton.icon(
+              onPressed: () => context.go('/payments/add/${_tenant!.id}'),
+              icon: const Icon(Icons.attach_money),
+              label: const Text('Catat Pembayaran'),
+            ),
+            const SizedBox(height: 8),
+            ElevatedButton.icon(
               onPressed: _showCheckoutDialog,
               icon: const Icon(Icons.logout),
               label: const Text('Checkout'),
-            ),
-            const SizedBox(height: 8),
-            // Disabled payment button with TODO comment
-            ElevatedButton.icon(
-              onPressed: null,
-              icon: const Icon(Icons.attach_money),
-              label: const Text('Catat Pembayaran'),
             ),
             const SizedBox(height: 24),
             Text('Riwayat Kamar', style: theme.textTheme.titleMedium),

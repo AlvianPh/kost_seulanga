@@ -1,13 +1,17 @@
+// lib/core/router/app_router.dart
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/dashboard/presentation/screens/dashboard_screen.dart';
 import '../../features/rooms/presentation/screens/rooms_screen.dart';
 import '../../features/payments/presentation/screens/keuangan_screen.dart';
+import '../../features/payments/presentation/screens/payment_form_screen.dart';
 import '../../features/reports/presentation/screens/laporan_screen.dart';
 import '../../features/tenants/presentation/screens/tenant_form_screen.dart';
 import '../../features/tenants/presentation/screens/tenant_detail_screen.dart';
 import '../../features/tenants/presentation/screens/move_tenant_screen.dart';
+
 final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
 final appRouter = GoRouter(
@@ -17,6 +21,15 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/',
       redirect: (context, state) => '/dashboard',
+    ),
+    // Payment routes
+    GoRoute(
+      path: '/payments/add',
+      builder: (context, state) => const PaymentFormScreen(),
+    ),
+    GoRoute(
+      path: '/payments/add/:tenantId',
+      builder: (context, state) => PaymentFormScreen(tenantId: int.parse(state.pathParameters['tenantId']!)),
     ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
